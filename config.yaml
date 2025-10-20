@@ -1,0 +1,7 @@
+camera_url: "rtsp://user:password@ip:port/stream"
+zone_points:
+  - [100, 200]
+  - [400, 200]
+  - [400, 500]
+  - [100, 500]
+confidence: 0.5
