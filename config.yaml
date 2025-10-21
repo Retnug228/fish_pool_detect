@@ -1,7 +1,33 @@
-camera_url: "rtsp://user:password@ip:port/stream"
-zone_points:
-  - [100, 200]
-  - [400, 200]
-  - [400, 500]
-  - [100, 500]
+camera_url: "--/--"
+zones:
+  - name: "Zone 1"
+    color: [0, 0, 255]
+    points:
+      - [0, 0]
+      - [205, 0]
+      - [205, 1080]
+      - [0, 1080]
+
+  - name: "Zone 2"
+    color: [0, 255, 0]
+    points:
+      - [205, 0]
+      - [205, 570]
+      - [630, 473]
+      - [630, 0]
+  - name: "Zone 3"
+    color: [255, 0, 0]
+    points:
+      - [630, 0]
+      - [630, 470]
+      - [1260, 440]
+      - [1260, 100]
+  - name: "Zone 4"
+    color: [ 255, 255, 0 ]
+    points:
+      - [1800, 100]
+      - [1775, 975]
+      - [1920, 1000]
+      - [1920, 20]
 confidence: 0.5
+show_labels: true
