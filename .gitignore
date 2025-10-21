@@ -1,2 +1,3 @@
 .venv
 yolo_model/yolo11m.pt
+translation.py
