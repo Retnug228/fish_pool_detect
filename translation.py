@@ -1,7 +1,8 @@
 import cv2
+import time
 
 # RTSP-поток
-rtsp_url = "rtsp://admin:smartspaces2019@172.20.3.183:554"
+rtsp_url = "rtsp://admin:8PykD48PykD4!@172.20.2.229:554"
 
 cap = cv2.VideoCapture(rtsp_url)
 
@@ -18,11 +19,20 @@ def mouse_callback(event, x, y, flags, param):
 cv2.namedWindow("RTSP")
 cv2.setMouseCallback("RTSP", mouse_callback)
 
+prev_time = time.time()
+
 while True:
     ret, frame = cap.read()
     if not ret:
         print("Ошибка при получении кадра")
         continue
+
+    curr_time = time.time()
+    fps = 1 / (curr_time - prev_time)
+    prev_time = curr_time
+
+    cv2.putText(frame, f"FPS: {fps:.1f}", (30, 100),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
 
     # Отобразим координаты на кадре
     cv2.putText(frame, f"X: {cursor_pos[0]} Y: {cursor_pos[1]}",

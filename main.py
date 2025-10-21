@@ -1,16 +1,20 @@
 import time
+import threading
+import queue
 from datetime import datetime
 from ultralytics import YOLO
 import cv2
 import yaml
 import numpy as np
 
-# Загрузка конфигурации
+
+#   Конфигурация  
 def load_config(path="config.yaml"):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-# Подготовка зон
+
+#   Зоны  
 def prepare_zones(zone_list):
     zones = []
     for z in zone_list:
@@ -21,22 +25,23 @@ def prepare_zones(zone_list):
         })
     return zones
 
-# Проверка попадания в зону
+
 def point_in_zone(point, zone_points):
     return cv2.pointPolygonTest(zone_points, point, False) >= 0
 
-# Отрисовка зон
+
 def draw_zones(frame, zones):
     for z in zones:
         cv2.polylines(frame, [z["points"]], True, z["color"], 2)
 
-# Отрисовка человека
+
 def draw_person(frame, box, center, color):
     x1, y1, x2, y2 = map(int, box.xyxy[0])
     cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
     cv2.circle(frame, center, 5, color, -1)
 
-# Обработка кадра
+
+#   Обработка  
 def process_frame(result, zones, confidence, tracked_people):
     frame = result.orig_img.copy()
     alert = []
@@ -60,7 +65,6 @@ def process_frame(result, zones, confidence, tracked_people):
                     person_zones.append(z["name"])
                     alert.append(z["name"])
 
-            # Логика прихода
             if track_id not in tracked_people:
                 tracked_people[track_id] = {
                     "arrival": datetime.now(),
@@ -73,7 +77,6 @@ def process_frame(result, zones, confidence, tracked_people):
 
             draw_person(frame, box, center, color)
 
-    # Логика ухода
     gone_ids = set(tracked_people.keys()) - current_ids
     for gid in gone_ids:
         departure_time = datetime.now()
@@ -82,24 +85,39 @@ def process_frame(result, zones, confidence, tracked_people):
 
     return frame, alert
 
-# Основной цикл
-def main():
-    config = load_config()
-    zones = prepare_zones(config.get("zones", []))
-    confidence = config.get("confidence", 0.5)
 
-    global model
-    model = YOLO(config.get("yolo_model", "yolo_model/yolo11s.pt"))
-
-    cap = cv2.VideoCapture(config["camera_url"])
+#   Потоки  
+def frame_reader(camera_url, frame_queue, stop_event):
+    cap = cv2.VideoCapture(camera_url)
     if not cap.isOpened():
         raise RuntimeError("Не удалось подключиться к камере")
 
+    while not stop_event.is_set():
+        ret, frame = cap.read()
+        if not ret:
+            continue
+        if not frame_queue.full():
+            frame_queue.put(frame)
+
+    cap.release()
+
+
+def frame_processor(frame_queue, model, zones, confidence, stop_event):
     prev_time = time.time()
     tracked_people = {}
 
-    for result in model.track(source=config["camera_url"], stream=True):
-        frame, alert = process_frame(result, zones, confidence, tracked_people)
+    while not stop_event.is_set():
+        if frame_queue.empty():
+            time.sleep(0.01)
+            continue
+
+        frame = frame_queue.get()
+
+        results = model.track(frame, persist=True)
+        if not results:
+            continue
+
+        frame, alert = process_frame(results[0], zones, confidence, tracked_people)
 
         # FPS
         curr_time = time.time()
@@ -108,20 +126,41 @@ def main():
         cv2.putText(frame, f"FPS: {fps:.1f}", (30, 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
 
-        # Отрисовка зон
         draw_zones(frame, zones)
 
-        # Предупреждение
         if alert:
             cv2.putText(frame, f"Человек в зоне: {', '.join(alert)}",
-                        (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 3)
+                        (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
         cv2.imshow("Fish Pool Monitor", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            stop_event.set()
             break
 
-    cap.release()
     cv2.destroyAllWindows()
+
+
+#   Основной запуск  
+def main():
+    config = load_config()
+    zones = prepare_zones(config.get("zones", []))
+    confidence = config.get("confidence", 0.5)
+
+    global model
+    model = YOLO(config.get("yolo_model", "yolo_model/yolo11s.pt"))
+
+    frame_queue = queue.Queue(maxsize=5)
+    stop_event = threading.Event()
+
+    reader_thread = threading.Thread(target=frame_reader, args=(config["camera_url"], frame_queue, stop_event))
+    processor_thread = threading.Thread(target=frame_processor, args=(frame_queue, model, zones, confidence, stop_event))
+
+    reader_thread.start()
+    processor_thread.start()
+
+    reader_thread.join()
+    processor_thread.join()
+
 
 if __name__ == "__main__":
     main()
