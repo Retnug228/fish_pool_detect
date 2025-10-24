@@ -17,45 +17,23 @@ def load_config(path="config.yaml"):
 
 
 # ---------- CSV ----------
-def init_csv(filename="csv/people_log_with_zones.csv"):
+def init_csv(filename="csv/people_log.csv"):
     if not os.path.exists(filename):
         with open(filename, mode="w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["id", "event", "zones", "time", "duration"])
+            writer.writerow(["id", "event", "time", "duration"])
     return filename
 
 
-def log_event(pid, event, zones=None, duration=None, filename="people_log_with_zones.csv"):
+def log_event(pid, event, duration=None, filename="people_log_with_zones.csv"):
     with open(filename, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
             pid,
             event,
-            ",".join(zones) if zones else "",
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             f"{duration:.2f}s" if duration else ""
         ])
-
-
-# ---------- Зоны ----------
-def prepare_zones(zone_list):
-    zones = []
-    for z in zone_list:
-        zones.append({
-            "name": z["name"],
-            "color": tuple(z.get("color", [0, 0, 255])),
-            "points": np.array(z["points"], np.int32)
-        })
-    return zones
-
-
-def point_in_zone(point, zone_points):
-    return cv2.pointPolygonTest(zone_points, point, False) >= 0
-
-
-def draw_zones(frame, zones):
-    for z in zones:
-        cv2.polylines(frame, [z["points"]], True, z["color"], 2)
 
 
 # ---------- Детекция ----------
@@ -78,42 +56,31 @@ def get_person_detections(result, model, confidence):
     return people
 
 
-def analyze_zones(person, zones):
-    zones_inside = []
-    for z in zones:
-        if point_in_zone(person["center"], z["points"]):
-            zones_inside.append(z["name"])
-    return zones_inside
-
-
 # ---------- Логика слежения ----------
 def update_tracked_people(people, tracked_people, csv_file):
     current_ids = {p["track_id"] for p in people}
+    now = datetime.now()
 
     # Новые люди
     for p in people:
         pid = p["track_id"]
-        zones_inside = analyze_zones(p, zones)
         if pid not in tracked_people:
             tracked_people[pid] = {
-                "start_time": datetime.now(),
-                "zones": zones_inside,
-                "last_seen": datetime.now()
+                "start_time": now,
+                "last_seen": now
             }
-            print(f"[ARRIVAL] Человек {pid} вошёл в {zones_inside}")
-            log_event(pid, "arrival", zones_inside, filename=csv_file)
+            print(f"[ARRIVAL] Человек {pid} появился в {now.strftime('%H:%M:%S')}")
+            log_event(pid, "arrival", filename=csv_file)
         else:
-            tracked_people[pid]["last_seen"] = datetime.now()
-            tracked_people[pid]["zones"] = zones_inside
+            tracked_people[pid]["last_seen"] = now
 
-    # Проверяем, кто ушёл
+    # Ушедшие люди
     gone_ids = []
-    now = datetime.now()
     for pid, info in tracked_people.items():
         if pid not in current_ids:
             duration = (now - info["start_time"]).total_seconds()
-            print(f"[DEPARTURE] Человек {pid} покинул все зоны. Был {duration:.2f} сек.")
-            log_event(pid, "departure", info["zones"], duration, csv_file)
+            print(f"[DEPARTURE] Человек {pid} покинул кадр (время: {duration:.2f} сек.)")
+            log_event(pid, "departure", duration, csv_file)
             gone_ids.append(pid)
 
     for gid in gone_ids:
@@ -121,33 +88,23 @@ def update_tracked_people(people, tracked_people, csv_file):
 
 
 # ---------- Отрисовка ----------
-def draw_detections(frame, people, zones):
-    alerts = []
+def draw_detections(frame, people):
     for p in people:
-        zones_inside = analyze_zones(p, zones)
-        color = (0, 255, 0)
-        if zones_inside:
-            alerts.extend(zones_inside)
-            for z in zones:
-                if z["name"] in zones_inside:
-                    color = z["color"]
-                    break
-
         x1, y1, x2, y2 = p["bbox"]
+        color = (0, 255, 0)
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
         cv2.circle(frame, p["center"], 5, color, -1)
         cv2.putText(frame, f"ID {p['track_id']}", (x1, y1 - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
-    return alerts
 
 
 # ---------- Обработка кадра ----------
-def process_frame(result, model, zones, confidence, tracked_people, csv_file):
+def process_frame(result, model, confidence, tracked_people, csv_file):
     frame = result.orig_img.copy()
     people = get_person_detections(result, model, confidence)
     update_tracked_people(people, tracked_people, csv_file)
-    alerts = draw_detections(frame, people, zones)
-    return frame, alerts
+    draw_detections(frame, people)
+    return frame, bool(people)
 
 
 # ---------- Потоки ----------
@@ -166,7 +123,7 @@ def frame_reader(camera_url, frame_queue, stop_event):
     cap.release()
 
 
-def frame_processor(frame_queue, model, zones, confidence, stop_event, csv_file):
+def frame_processor(frame_queue, model, confidence, stop_event, csv_file):
     prev_time = time.time()
     tracked_people = {}
 
@@ -180,21 +137,20 @@ def frame_processor(frame_queue, model, zones, confidence, stop_event, csv_file)
         if not results:
             continue
 
-        frame, alert = process_frame(results[0], model, zones, confidence, tracked_people, csv_file)
+        frame, has_people = process_frame(results[0], model, confidence, tracked_people, csv_file)
 
+        # FPS
         curr_time = time.time()
         fps = 1 / (curr_time - prev_time)
         prev_time = curr_time
         cv2.putText(frame, f"FPS: {fps:.1f}", (30, 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
 
-        draw_zones(frame, zones)
+        if has_people:
+            cv2.putText(frame, "Обнаружен человек", (30, 50),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
-        if alert:
-            cv2.putText(frame, f"Человек в: {', '.join(set(alert))}",
-                        (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-
-        cv2.imshow("Fish Pool Monitor", frame)
+        cv2.imshow("Fish Pool Monitor (Full Frame Detection)", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             stop_event.set()
             break
@@ -205,8 +161,6 @@ def frame_processor(frame_queue, model, zones, confidence, stop_event, csv_file)
 # ---------- Основной запуск ----------
 def main():
     config = load_config()
-    global zones
-    zones = prepare_zones(config.get("zones", []))
     confidence = config.get("confidence", 0.5)
     camera_url = config.get("camera_url")
 
@@ -217,7 +171,7 @@ def main():
     stop_event = threading.Event()
 
     reader_thread = threading.Thread(target=frame_reader, args=(camera_url, frame_queue, stop_event))
-    processor_thread = threading.Thread(target=frame_processor, args=(frame_queue, model, zones, confidence, stop_event, csv_file))
+    processor_thread = threading.Thread(target=frame_processor, args=(frame_queue, model, confidence, stop_event, csv_file))
 
     reader_thread.start()
     processor_thread.start()

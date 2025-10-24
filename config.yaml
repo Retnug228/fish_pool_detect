@@ -1,4 +1,4 @@
-camera_url: "--/--"
+camera_url: "rtsp://admin:smartspaces2019@172.20.3.183:554"
 zones:
   - name: "Zone 1"
     color: [0, 0, 255]
@@ -29,5 +29,12 @@ zones:
       - [1775, 975]
       - [1920, 1000]
       - [1920, 20]
+  - name: "Zone 5"
+    color: [ 0, 255, 255]
+    points:
+    - [ 190, 785 ]
+    - [ 190, 1920 ]
+    - [ 1775, 1920 ]
+    - [ 1775, 785 ]
 confidence: 0.5
 show_labels: true

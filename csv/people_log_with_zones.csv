@@ -1,0 +1,10 @@
+id,event,zones,time,duration
+16,arrival,,2,
+16,departure,,2025-10-23 13:02:25,0.18s
+17,arrival,,2025-10-23 13:02:25,
+17,departure,,2025-10-23 13:02:26,0.32s
+32,arrival,,2025-10-23 13:07:50,
+32,departure,Zone 2,2025-10-23 13:07:51,0.35s
+48,arrival,Zone 3,2025-10-23 13:08:27,
+48,departure,Zone 3,2025-10-23 13:08:27,0.49s
+
