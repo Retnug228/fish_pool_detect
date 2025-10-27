@@ -218,7 +218,7 @@ def main():
         config = load_config()
         confidence = config.get("confidence", 0.5)
         camera_url = config.get("camera_url")
-        model_path = config.get("yolo_model", "yolo_model/yolo11s.pt")
+        model_path = config.get("yolo_model", "yolo_model/yolo11n.pt")
 
         print("[INIT] Загрузка модели YOLO...")
         model = YOLO(model_path)
