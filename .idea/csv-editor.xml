@@ -3,24 +3,17 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\people_log.csv">
+        <entry key="\csv\people_log.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\svg\people_log.csv">
+        <entry key="\csv\people_log_with_zones.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\svg\zone_log.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=":" />
             </Attribute>
           </value>
         </entry>
