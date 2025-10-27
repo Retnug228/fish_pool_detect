@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5aaaf9fe-fc4c-44ea-9356-b88ae4680f06" name="Changes" comment="льь">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/detectForKhadas.py" beforeDir="false" afterPath="$PROJECT_DIR$/detectForKhadas.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +99,7 @@
       <workItem from="1761294979766" duration="4000" />
       <workItem from="1761303918677" duration="4006000" />
       <workItem from="1761557062663" duration="303000" />
-      <workItem from="1761561045372" duration="7074000" />
+      <workItem from="1761561045372" duration="7423000" />
     </task>
     <task id="LOCAL-00001" summary="Init commit">
       <option name="closed" value="true" />
@@ -156,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761565789784</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="льь">
+      <option name="closed" value="true" />
+      <created>1761569457045</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1761569457045</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -179,6 +179,9 @@ def frame_reader(camera_url, frame_queue, stop_event):
 
 def frame_processor(frame_queue, model, confidence, stop_event, csv_file):
     tracked_people = {}
+    frame_count = 0
+    start_time = time.time()
+    report_interval = 10  # выводить FPS каждые N кадров
 
     while not stop_event.is_set():
         try:
@@ -192,6 +195,16 @@ def frame_processor(frame_queue, model, confidence, stop_event, csv_file):
                 continue
 
             process_frame(results[0], model, confidence, tracked_people, csv_file)
+
+            # Подсчёт FPS
+            frame_count += 1
+            if frame_count % report_interval == 0:
+                elapsed = time.time() - start_time
+                fps = frame_count / elapsed if elapsed > 0 else 0
+                print(f"[INFO] Средний FPS за последние {report_interval} кадров: {fps:.2f}")
+                # Сброс счётчиков для плавного усреднения
+                frame_count = 0
+                start_time = time.time()
 
         except Exception as e:
             print(f"[PROCESSOR ERROR] {e}")
