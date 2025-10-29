@@ -102,8 +102,8 @@ def update_tracked_people(people, tracked_people, csv_file, lost_timeout=3):
         for pid, info in list(tracked_people.items()):
             if pid not in current_ids:
                 if time.time() - info["last_seen_time"] > lost_timeout:
-                    duration = (datetime.now() - info["last_seen"]).total_seconds()
-                    info["total_duration"] += duration
+                    final_duration = (info["last_seen"] - info["first_arrival"]).total_seconds()
+                    info["total_duration"] = final_duration
                     print(f"[DEPARTURE] Человек {pid} ушёл. Общее время: {info['total_duration']:.2f}s")
                     log_final_event(pid, info, csv_file)
                     gone_ids.append(pid)
