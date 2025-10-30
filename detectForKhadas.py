@@ -73,7 +73,6 @@ def get_person_detections(result, model, confidence):
     return people
 
 def get_cpu_temperature():
-    """Возвращает температуру CPU в градусах Цельсия или None, если недоступна."""
     try:
         temps = psutil.sensors_temperatures()
         if not temps:
@@ -204,7 +203,9 @@ def frame_processor(frame_queue, model, confidence, stop_event, csv_file):
             if frame_count % report_interval == 0:
                 elapsed = time.time() - start_time
                 fps = frame_count / elapsed if elapsed > 0 else 0
-                print(f"[INFO] Средний FPS за последние {report_interval} кадров: {fps:.2f}")
+                temp = get_cpu_temperature()
+                temp_str = f" | CPU: {temp:.1f}°C" if temp is not None else ""
+                print(f"[INFO] Средний FPS за последние {report_interval} кадров: {fps:.2f}{temp_str}")
                 # Сброс счётчиков для плавного усреднения
                 frame_count = 0
                 start_time = time.time()
