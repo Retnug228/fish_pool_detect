@@ -2,3 +2,4 @@ ultralytics
 PyYAML
 opencv-python
 numpy
+psutil

@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5aaaf9fe-fc4c-44ea-9356-b88ae4680f06" name="Changes" comment="вывы">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+    <list default="true" id="5aaaf9fe-fc4c-44ea-9356-b88ae4680f06" name="Changes" comment="Optimise Dockerfile">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="plata" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -101,6 +106,7 @@
       <workItem from="1761303918677" duration="4006000" />
       <workItem from="1761557062663" duration="303000" />
       <workItem from="1761561045372" duration="10742000" />
+      <workItem from="1761733840358" duration="6000" />
     </task>
     <task id="LOCAL-00001" summary="Init commit">
       <option name="closed" value="true" />
@@ -174,7 +180,23 @@
       <option name="project" value="LOCAL" />
       <updated>1761569658131</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Optimise for plata">
+      <option name="closed" value="true" />
+      <created>1761667915387</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1761667915387</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Optimise Dockerfile">
+      <option name="closed" value="true" />
+      <created>1761668504636</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1761668504636</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,7 +209,9 @@
     <MESSAGE value="Update structure of main, add arrive and gone time" />
     <MESSAGE value="льь" />
     <MESSAGE value="вывы" />
-    <option name="LAST_COMMIT_MESSAGE" value="вывы" />
+    <MESSAGE value="Optimise for plata" />
+    <MESSAGE value="Optimise Dockerfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimise Dockerfile" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fish_pool_detect$main.coverage" NAME="main Coverage Results" MODIFIED="1761304142727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

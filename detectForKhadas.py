@@ -2,6 +2,8 @@ import time
 import threading
 import queue
 from datetime import datetime
+
+import psutil
 from ultralytics import YOLO
 import cv2
 import yaml
@@ -70,6 +72,23 @@ def get_person_detections(result, model, confidence):
         print(f"[DETECTION ERROR] {e}")
     return people
 
+def get_cpu_temperature():
+    """Возвращает температуру CPU в градусах Цельсия или None, если недоступна."""
+    try:
+        temps = psutil.sensors_temperatures()
+        if not temps:
+            return None
+
+        # Попробуем найти наиболее релевантный сенсор (coretemp, cpu_thermal, acpitz и т.д.)
+        for name, entries in temps.items():
+            for entry in entries:
+                if entry.current > 0:
+                    # Возвращаем первую подходящую температуру
+                    return entry.current
+        return None
+    except Exception as e:
+        print(f"[TEMP ERROR] Не удалось получить температуру: {e}")
+        return None
 
 # ---------- Логика слежения ----------
 def update_tracked_people(people, tracked_people, csv_file, lost_timeout=3):
