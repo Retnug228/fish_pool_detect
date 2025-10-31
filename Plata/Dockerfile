@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --no-cache-dir lap>=0.5.12
 
-COPY requirements.txt .
+COPY ../requirements.txt .
 RUN pip install --no-cache-dir PyYAML numpy
 
-COPY . /app
+COPY .. /app
 WORKDIR /app
 RUN mkdir -p csv
 

@@ -1,0 +1,150 @@
+Index: YoloCam.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/YoloCam.py b/Cam/YoloCam.py
+rename from YoloCam.py
+rename to Cam/YoloCam.py
+--- a/YoloCam.py	(revision 2ec39a5a57c54b6be2dd173414ce75b1c3449e55)
++++ b/Cam/YoloCam.py	(date 1761941187909)
+@@ -8,9 +8,9 @@
+ # ======= Настройки =======
+ ZONE_POINTS = np.array([[0, 0], [0, 1080], [1920, 1080], [1920, 0]])
+ CONFIDENCE = 0.5
+-LOG_FILE = "csv/zone_log.csv"
++LOG_FILE = "../csv/zone_log.csv"
+ 
+-model = YOLO("yolo_model/yolo11s.pt")
++model = YOLO("../yolo_model/yolo11s.pt")
+ 
+ if not os.path.exists(LOG_FILE):
+     with open(LOG_FILE, mode="w", newline="", encoding="utf-8") as f:
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Black\">\r\n    <option name=\"sdkName\" value=\"Python 3.12 (fish_pool_detect)\" />\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.12 (fish_pool_detect)\" project-jdk-type=\"Python SDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 2ec39a5a57c54b6be2dd173414ce75b1c3449e55)
++++ b/.idea/misc.xml	(date 1761769926731)
+@@ -3,5 +3,5 @@
+   <component name="Black">
+     <option name="sdkName" value="Python 3.12 (fish_pool_detect)" />
+   </component>
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (fish_pool_detect)" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
+Index: Dockerfile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Dockerfile b/Zones/Dockerfile
+rename from Dockerfile
+rename to Zones/Dockerfile
+--- a/Dockerfile	(revision 2ec39a5a57c54b6be2dd173414ce75b1c3449e55)
++++ b/Zones/Dockerfile	(date 1761941187915)
+@@ -12,10 +12,10 @@
+ 
+ RUN pip install --no-cache-dir lap>=0.5.12
+ 
+-COPY requirements.txt .
++COPY ../requirements.txt .
+ RUN pip install --no-cache-dir PyYAML numpy
+ 
+-COPY . /app
++COPY .. /app
+ WORKDIR /app
+ RUN mkdir -p csv
+ 
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5aaaf9fe-fc4c-44ea-9356-b88ae4680f06\" name=\"Changes\" comment=\"вывы\">\r\n      <change afterPath=\"$PROJECT_DIR$/Dockerfile\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ChangesViewManager\" show_ignored=\"true\" />\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n        <option value=\"Dockerfile\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;Retnug228&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Retnug228/fish_pool_detect.git&quot;,\r\n    &quot;accountId&quot;: &quot;e62d6ccd-1fda-4a3c-8f40-3da3534925a5&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 5\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"34L0l2VBFUj4ohWN6EJwyEor10P\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Python.YoloCam.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.conv.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.main.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.mainWithoutZones.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.translation.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/grrom/Desktop/fish_pool_detect&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\grrom\\Desktop\\fish_pool_detect\\svg\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.26053.29\" />\r\n        <option value=\"bundled-python-sdk-b1dbf8ef85a6-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.26053.29\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"5aaaf9fe-fc4c-44ea-9356-b88ae4680f06\" name=\"Changes\" comment=\"\" />\r\n      <created>1760977692982</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1760977692982</updated>\r\n      <workItem from=\"1760977694785\" duration=\"5318000\" />\r\n      <workItem from=\"1761045179360\" duration=\"150000\" />\r\n      <workItem from=\"1761057645363\" duration=\"10305000\" />\r\n      <workItem from=\"1761134731123\" duration=\"1016000\" />\r\n      <workItem from=\"1761136064218\" duration=\"1125000\" />\r\n      <workItem from=\"1761137219620\" duration=\"6240000\" />\r\n      <workItem from=\"1761213501608\" duration=\"1251000\" />\r\n      <workItem from=\"1761294979766\" duration=\"4000\" />\r\n      <workItem from=\"1761303918677\" duration=\"4006000\" />\r\n      <workItem from=\"1761557062663\" duration=\"303000\" />\r\n      <workItem from=\"1761561045372\" duration=\"10742000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Init commit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1760980321662</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1760980321662</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Init commit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1760980548231</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1760980548231</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Add zones, FPS, yolo11s.pt\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761061811906</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761061811906</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Update .gitignore\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761061928294</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761061928294</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Update structure of main, add arrive and gone time\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761066145276</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761066145276</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"льь\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761308989742</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761308989742</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"льь\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761565789784</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761565789784</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"льь\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761569457045</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761569457045</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"вывы\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1761569658131</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1761569658131</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"10\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Init commit\" />\r\n    <MESSAGE value=\"Add zones, FPS, yolo11s.pt\" />\r\n    <MESSAGE value=\"Update .gitignore\" />\r\n    <MESSAGE value=\"Update structure of main, add arrive and gone time\" />\r\n    <MESSAGE value=\"льь\" />\r\n    <MESSAGE value=\"вывы\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"вывы\" />\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/fish_pool_detect$main.coverage\" NAME=\"main Coverage Results\" MODIFIED=\"1761304142727\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/fish_pool_detect$translation.coverage\" NAME=\"translation Coverage Results\" MODIFIED=\"1761304291702\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/fish_pool_detect$conv.coverage\" NAME=\"conv Coverage Results\" MODIFIED=\"1761060009123\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$/.venv/Lib/site-packages/ultralytics/nn/modules\" />\r\n    <SUITE FILE_PATH=\"coverage/fish_pool_detect$mainWithoutZones.coverage\" NAME=\"mainWithoutZones Coverage Results\" MODIFIED=\"1761562096924\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/fish_pool_detect$YoloCam.coverage\" NAME=\"YoloCam Coverage Results\" MODIFIED=\"1761213521117\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2ec39a5a57c54b6be2dd173414ce75b1c3449e55)
++++ b/.idea/workspace.xml	(date 1761936999357)
+@@ -5,7 +5,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="5aaaf9fe-fc4c-44ea-9356-b88ae4680f06" name="Changes" comment="вывы">
+-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -34,7 +34,7 @@
+   <component name="GithubPullRequestsUISettings">{
+   &quot;selectedUrlAndAccountId&quot;: {
+     &quot;url&quot;: &quot;https://github.com/Retnug228/fish_pool_detect.git&quot;,
+-    &quot;accountId&quot;: &quot;e62d6ccd-1fda-4a3c-8f40-3da3534925a5&quot;
++    &quot;accountId&quot;: &quot;5752ea76-2c53-4d50-a328-e88a1365acac&quot;
+   }
+ }</component>
+   <component name="ProjectColorInfo">{
+@@ -65,7 +65,7 @@
+     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+ }</component>
+@@ -77,8 +77,8 @@
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.26053.29" />
+-        <option value="bundled-python-sdk-b1dbf8ef85a6-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.26053.29" />
++        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
++        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+       </set>
+     </attachedChunks>
+   </component>
+@@ -101,6 +101,9 @@
+       <workItem from="1761303918677" duration="4006000" />
+       <workItem from="1761557062663" duration="303000" />
+       <workItem from="1761561045372" duration="10742000" />
++      <workItem from="1761769819057" duration="510000" />
++      <workItem from="1761846661603" duration="19000" />
++      <workItem from="1761936988875" duration="11000" />
+     </task>
+     <task id="LOCAL-00001" summary="Init commit">
+       <option name="closed" value="true" />
+@@ -174,7 +177,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1761569658131</updated>
+     </task>
+-    <option name="localTasksCounter" value="10" />
++    <task id="LOCAL-00010" summary="вывы">
++      <option name="closed" value="true" />
++      <created>1761770315625</created>
++      <option name="number" value="00010" />
++      <option name="presentableId" value="LOCAL-00010" />
++      <option name="project" value="LOCAL" />
++      <updated>1761770315625</updated>
++    </task>
++    <option name="localTasksCounter" value="11" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+diff --git a/config.yaml b/Zones/config.yaml
+rename from config.yaml
+rename to Zones/config.yaml
+diff --git a/main.py b/Zones/main.py
+rename from main.py
+rename to Zones/main.py
+diff --git a/mainWithoutZones.py b/WithoutZones/mainWithoutZones.py
+rename from mainWithoutZones.py
+rename to WithoutZones/mainWithoutZones.py
+diff --git a/detectForKhadas.py b/Plata/detectForKhadas.py
+rename from detectForKhadas.py
+rename to Plata/detectForKhadas.py

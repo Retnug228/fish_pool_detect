@@ -8,9 +8,9 @@ import os
 # ======= Настройки =======
 ZONE_POINTS = np.array([[0, 0], [0, 1080], [1920, 1080], [1920, 0]])
 CONFIDENCE = 0.5
-LOG_FILE = "csv/zone_log.csv"
+LOG_FILE = "../csv/zone_log.csv"
 
-model = YOLO("yolo_model/yolo11s.pt")
+model = YOLO("../yolo_model/yolo11s.pt")
 
 if not os.path.exists(LOG_FILE):
     with open(LOG_FILE, mode="w", newline="", encoding="utf-8") as f:

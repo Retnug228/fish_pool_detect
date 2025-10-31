@@ -2,7 +2,6 @@ import time
 import threading
 import queue
 from datetime import datetime
-
 import psutil
 from ultralytics import YOLO
 import cv2
